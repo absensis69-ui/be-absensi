@@ -6,5 +6,6 @@ const absensiRouter = Router();
 
 absensiRouter.post("/", authenticateToken, absensiController.create);
 absensiRouter.get("/", authenticateToken, absensiController.getDetail);
+absensiRouter.put("/", authenticateToken, absensiController.update);
 
 export default absensiRouter;

@@ -4,10 +4,12 @@ import ResponseError from "../errors/response.error";
 import {
   CreateAbsensiRequest,
   HadirDetailRequest,
+  UpdateAbsensiRequest,
 } from "../models/absensi.models";
 import {
   createAbsensiValidation,
   HadirDetailValidation,
+  UpdateAbsensiValidation,
 } from "../validations/absensi.validation";
 import absensiService from "../services/absensi.service";
 
@@ -61,8 +63,47 @@ class AbsensiController {
     }
 
     try {
-      const result = await absensiService.getAbsensiById(user);
+      const result = await absensiService.getAbsensiByUser(user);
       res.status(result.status).json({ data: result.data });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async update(req: UserRequest, res: Response, next: NextFunction) {
+    const user = req.user;
+    if (!user) {
+      return next(
+        new ResponseError(401, "Akses ditolak: User tidak terautentikasi.")
+      );
+    }
+
+    try {
+      let reqAttendanceId = req.params.id!;
+
+      const attendanceId = parseInt(reqAttendanceId);
+
+      if (isNaN(attendanceId)) {
+        throw new ResponseError(
+          400,
+          "ID Absensi harus berupa angka yang valid."
+        );
+      }
+
+      const updateData: UpdateAbsensiRequest = UpdateAbsensiValidation.parse(
+        req.body
+      );
+
+      const result = await absensiService.UpdateAbsensi(
+        user,
+        attendanceId,
+        updateData
+      );
+
+      res.status(result.status).json({
+        message: "Absensi berhasil diupdate.",
+        data: result.data,
+      });
     } catch (error) {
       next(error);
     }

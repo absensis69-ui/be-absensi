@@ -17,3 +17,18 @@ export const HadirDetailValidation = z.object({
     .min(-180)
     .max(180),
 });
+
+export const UpdateAbsensiValidation = z.object({
+  status: z.enum(["HADIR", "SAKIT", "CUTI", "LIBUR"]).optional(),
+  foto_selfie_url: z.url("URL foto selfie tidak valid").optional(),
+  latitude: z
+    .number("Latitude wajib diisi jika status HADIR")
+    .min(-90)
+    .max(90)
+    .optional(),
+  longitude: z
+    .number("Longitude wajib diisi jika status HADIR")
+    .min(-180)
+    .max(180)
+    .optional(),
+});
