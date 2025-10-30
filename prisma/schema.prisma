@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User Profile Table
+model User {
+  id           Int    @id @default(autoincrement())
+  email        String    @unique
+  password     String
+  name         String?   
+  phoneNumber  String?   @map("phone_number")
+  idNumber     String?   @map("id_number")
+  birthDate    DateTime? @map("birth_date") @db.Date // Use @db.Date for just date without time
+  jobTitle     String?   @map("job_tittle") // Fix typo to job_title if possible, but following your image
+  attendances  Attendance[]
+
+  @@map("users") // Maps model name to table name
+}
+
+// Attendance Status Enum
+enum AttendanceStatus {
+  HADIR
+  SAKIT
+  CUTI
+  LIBUR
+}
+
+// Attendance Record Table
+model Attendance {
+  id           Int           @id @default(autoincrement())
+  userId       Int
+  date         DateTime         @db.Date // Store only date
+  status       AttendanceStatus
+  user         User             @relation(fields: [userId], references: [id])
+  presenceDetails PresenceDetails?
+
+  @@unique([userId, date]) // A user can only have one attendance record per day
+  @@map("absensi") // Maps model name to table name
+}
+
+// Presence Details (when status is HADIR)
+model PresenceDetails {
+  id          Int    @id @default(autoincrement())
+  attendanceId Int    @unique // One-to-one relation with Attendance
+  attendance  Attendance @relation(fields: [attendanceId], references: [id])
+  selfieUrl   String    @map("foto_selfie_url")
+  latitude    Float
+  longitude   Float
+
+  @@map("hadir") // Maps model name to table name
+}
