@@ -22,4 +22,4 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/absensi", absensiRouter);
 app.use(errorMiddleware);
 
-export default app;
+module.exports = app;
