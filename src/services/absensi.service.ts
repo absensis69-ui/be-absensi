@@ -171,6 +171,32 @@ class AbsensiService {
     }
     throw new ResponseError(400, "Tidak ada data yang valid untuk diupdate.");
   }
+
+  async deleteAbsensi(user: customJwtPayload, attendanceId: number) {
+    const existingAttendance = await prisma.attendance.findUnique({
+      where: {
+        id: attendanceId,
+        userId: user.id,
+      },
+    });
+
+    if (!existingAttendance) {
+      throw new ResponseError(
+        404,
+        "Absensi tidak ditemukan atau Anda tidak berhak menghapusnya."
+      );
+    }
+    const deletedAttendance = await prisma.attendance.delete({
+      where: {
+        id: attendanceId,
+      },
+    });
+
+    return { 
+        status: 200, 
+        data: `Absensi ID ${deletedAttendance.id} berhasil dihapus.`
+    };
+  }
 }
 
 export default new AbsensiService();

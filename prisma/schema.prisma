@@ -42,18 +42,18 @@ model Attendance {
   user         User             @relation(fields: [userId], references: [id])
   presenceDetails PresenceDetails?
 
-  @@unique([userId, date]) // A user can only have one attendance record per day
-  @@map("absensi") // Maps model name to table name
+  @@unique([userId, date]) 
+  @@map("absensi") 
 }
 
 // Presence Details (when status is HADIR)
 model PresenceDetails {
   id          Int    @id @default(autoincrement())
-  attendanceId Int    @unique // One-to-one relation with Attendance
-  attendance  Attendance @relation(fields: [attendanceId], references: [id])
+  attendanceId Int    @unique 
+  attendance  Attendance @relation(fields: [attendanceId], references: [id], onDelete: Cascade)
   selfieUrl   String    @map("foto_selfie_url")
   latitude    Float
   longitude   Float
 
-  @@map("hadir") // Maps model name to table name
+  @@map("hadir") 
 }

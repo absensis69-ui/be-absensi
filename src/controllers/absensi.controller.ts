@@ -79,9 +79,7 @@ class AbsensiController {
     }
 
     try {
-      let reqAttendanceId = req.params.id!;
-
-      const attendanceId = parseInt(reqAttendanceId);
+      const attendanceId = parseInt(req.params.id!);
 
       if (isNaN(attendanceId)) {
         throw new ResponseError(
@@ -103,6 +101,33 @@ class AbsensiController {
       res.status(result.status).json({
         message: "Absensi berhasil diupdate.",
         data: result.data,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async remove(req: UserRequest, res: Response, next: NextFunction) {
+    const user = req.user;
+    if (!user) {
+      return next(
+        new ResponseError(401, "Akses ditolak: User tidak terautentikasi.")
+      );
+    }
+    try {
+      const attendanceId = parseInt(req.params.id!);
+
+      if (isNaN(attendanceId)) {
+        throw new ResponseError(
+          400,
+          "ID Absensi harus berupa angka yang valid."
+        );
+      }
+
+      const result = await absensiService.deleteAbsensi(user, attendanceId);
+
+      res.status(result.status).json({
+        message: result.data,
       });
     } catch (error) {
       next(error);
