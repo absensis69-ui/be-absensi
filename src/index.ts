@@ -22,4 +22,6 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/absensi", absensiRouter);
 app.use(errorMiddleware);
 
-module.exports = app;
+app.listen(PORT, () => {
+  console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);
+});
