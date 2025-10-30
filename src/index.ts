@@ -15,6 +15,11 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cookieParser());
 
+app.get("/", (req: Request, res: Response) => {
+  res.status(200).json({ message: "Absensi Backend is running!" });
+});
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/absensi", absensiRouter);
 app.use(errorMiddleware);
+
+export default app;
