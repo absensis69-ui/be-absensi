@@ -2,9 +2,11 @@
   "name": "be-absensi",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "nodemon src/index.ts"
+    "start": "nodemon src/index.ts",
+    "build": "npx tsc && npx prisma generate", 
+    "serve": "node dist/index.js"
   },
   "keywords": [],
   "author": "",
