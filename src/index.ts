@@ -18,10 +18,3 @@ app.use(cookieParser());
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/absensi", absensiRouter);
 app.use(errorMiddleware);
-
-app.listen(PORT, () => {
-  console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);
-  console.log(
-    `Database URL: ${process.env.DATABASE_URL ? "Connected" : "Missing"}`
-  );
-});
