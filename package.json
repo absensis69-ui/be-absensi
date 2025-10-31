@@ -4,8 +4,8 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
+    "build": "npx prisma generate && npx tsc",
     "start": "nodemon src/index.ts",
-    "build": "npx tsc && npx prisma generate", 
     "serve": "node dist/index.js"
   },
   "keywords": [],
