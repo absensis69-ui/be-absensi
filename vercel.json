@@ -1,13 +1,12 @@
 {
   "version": 2,
+  "buildCommand": "npx prisma generate",
   "builds": [
     {
       "src": "src/index.ts",
       "use": "@vercel/node"
     }
   ],
-  "buildCommand": "npx prisma generate && npx tsc",
-  "outputDirectory": "dist",
   "routes": [
     {
       "src": "/(.*)",
