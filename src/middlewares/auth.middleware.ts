@@ -8,7 +8,10 @@ export const authenticateToken = (
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.cookies.authToken;
+  const authHeader = req.headers.authorization;
+  const tokenFromHeader = authHeader?.split(" ")[1];
+  const tokenFromCookie = req.cookies.authToken;
+  const token = tokenFromHeader || tokenFromCookie;
 
   if (token == null) {
     throw new ResponseError(401, "unauthorized");
