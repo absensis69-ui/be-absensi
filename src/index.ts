@@ -1,12 +1,10 @@
-// src/index.ts
-
 import express, { Request, Response, Application } from "express";
 import dotenv from "dotenv";
-import prisma from "./utils/prisma";
 import { errorMiddleware } from "./middlewares/error.middleware";
 import userRouter from "./routes/user.route";
 import cookieParser from "cookie-parser";
 import absensiRouter from "./routes/absensi.router";
+import cors from "cors";
 dotenv.config();
 
 const app: Application = express();
@@ -14,6 +12,14 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(
+  cors({
+    origin: "*", 
+    // origin: 'https://<URL-NEXTJS-FRONTEND>.vercel.app', // ⭐ REKOMENDASI: Ganti dengan URL front-end lo di produksi
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true,
+  })
+);
 
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({ message: "Absensi Backend is running!" });
